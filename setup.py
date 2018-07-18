@@ -10,7 +10,7 @@ setup(
     author_email='xieqihui@gmail.com',
     maintainer='Qihui Xie',
     maintainer_email='xieqihui@gmail.com',
-    url='https://github.com/xieqihui/pandas_multiprocess',
+    url='https://github.com/xieqihui/pandas-multiprocess',
     license="LICENSE.txt",
     description='Multiprocessing Support for Pandas DataFrame',
     long_description='Multiprocessing Support for Pandas DataFrame',
