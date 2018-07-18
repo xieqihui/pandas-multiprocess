@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='pandas_multiprocess',
-    version='0.0.1',
+    version='0.0.2',
     author='Qihui Xie',
     author_email='xieqihui@gmail.com',
     maintainer='Qihui Xie',
