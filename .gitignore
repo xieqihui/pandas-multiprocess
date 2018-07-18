@@ -1,0 +1,11 @@
+*.egg-info/
+build/
+dist/
+__pycache__/
+**/*.swp
+.cache/
+**/*.DS_Store
+.idea
+.ipynb_checkpoints
+.*
+!/.gitignore
