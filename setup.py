@@ -12,8 +12,8 @@ setup(
     maintainer_email='xieqihui@gmail.com',
     url='https://github.com/xieqihui/pandas_multiprocess.git',
     license="LICENSE.txt",
-    description='Multiprocessing Support for Pandas DataFramed',
-    long_description='Multiprocessing Support for Pandas DataFramed',
+    description='Multiprocessing Support for Pandas DataFrame',
+    long_description='Multiprocessing Support for Pandas DataFrame',
     packages=['pandas_multiprocess'],
     install_requires=required
 )
