@@ -1,4 +1,4 @@
-.PHONY: clean-build clean-pyc
+.PHONY: clean-build clean-pyc build
 
 TEST_PATH=./tests
 
@@ -17,3 +17,6 @@ build: clean-build
 
 test: clean-pyc
 	pytest --verbose --color=yes $(TEST_PATH)
+
+install: build
+	pip uninstall --yes pandas-multiprocess & pip install dist/pandas_multiprocess*.whl
