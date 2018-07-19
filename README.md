@@ -12,6 +12,8 @@ pip install pandas-multiprocess
 from pandas_multiprocess import multi_process
 ```
 #### Define a function which will process each row in a Pandas DataFrame
+The func must take a pandas.Series as its first positional argument and returns
+a pandas.Series.
 ```python
 def func(data_row, wait):
     time.sleep(wait)
