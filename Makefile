@@ -16,6 +16,9 @@ clean-build:
 build: clean-build
 	python setup.py bdist_wheel
 
+publish: build
+	twine upload dist/*
+
 test: clean-pyc
 	pytest --verbose --color=yes $(TEST_PATH)
 
