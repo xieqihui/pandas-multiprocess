@@ -116,20 +116,20 @@ class TaskTracker(multiprocessing.Process):
         logger.debug('All task data cleared')
 
 
-def multi_process(func, data, chunk_size=None, num_process=None, **args):
+def multi_process(func, data, num_process=None, **args):
     '''Function to use multiprocessing to process pandas Dataframe.
 
     This function applies a function on each row of the input DataFrame by
     multiprocessing.
 
     Args:
-        func (function): the function to apply on each row of the input
-            Dataframe
+        func (function): The function to apply on each row of the input
+            Dataframe. The func must accept pandas.Series as the first
+            positional argument and return a pandas.Series.
         data (pandas.DataFrame): A DataFrame to be processed.
-        chunk_size (int, optional): how many rows of data to be sent in each
-            single process at a time. Defaults to be int(len(data)/num_process)
-        num_process (int, optional): the number of processes to run in
+        num_process (int, optional): The number of processes to run in
             parallel. Defaults to be the number of CPUs of the computer.
+        args (dict): Keyword arguments to pass as keywords arguments to `func`
     return:
         A dataframe containing the results
     '''
@@ -138,17 +138,15 @@ def multi_process(func, data, chunk_size=None, num_process=None, **args):
         'Input data must be a pandas.DataFrame instance'
     if num_process is None:
         num_process = multiprocessing.cpu_count()
-    if chunk_size is None:
-        chunk_size = int(np.ceil(len(data)/float(num_process)))
     # Establish communication queues
     tasks = multiprocessing.JoinableQueue()
     results = multiprocessing.Queue()
     error_queue = multiprocessing.Queue()
     start_time = time.time()
-    # Enqueue jobs
-    num_jobs = int(np.ceil(len(data)/float(chunk_size)))
-    for i in range(num_jobs):
-        tasks.put(data[i*chunk_size:min((i+1)*chunk_size, len(data))])
+    # Enqueue tasks
+    num_task = len(data)
+    for i in range(num_task):
+        tasks.put(data.iloc[i, :])
     # Add a poison pill for each consumer
     for i in range(num_process):
         tasks.put(None)
@@ -172,9 +170,9 @@ def multi_process(func, data, chunk_size=None, num_process=None, **args):
     else:
         # Collect results
         result_table = []
-        while num_jobs:
-            result_table += results.get()
-            num_jobs -= 1
+        while num_task:
+            result_table.append(results.get())
+            num_task -= 1
         df_results = pd.DataFrame(result_table)
         logger.info("Jobs finished in {0:.2f}s".format(
             time.time()-start_time))
