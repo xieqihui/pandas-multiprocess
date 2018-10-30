@@ -24,6 +24,7 @@ import multiprocessing
 import time
 import os
 import pandas as pd
+from tqdm import tqdm
 import logging
 logger = logging.getLogger(__name__)
 
@@ -88,34 +89,51 @@ class TaskTracker(multiprocessing.Process):
             begining.
         current_state (int): Current finished percentage of total tasks.
     '''
-    def __init__(self, task_queue):
+    def __init__(self, task_queue, verbose=False):
         '''Construct an instance of TaskTracker
 
         Args:
             task_queue (multiprocessing.JoinableQueue): A queue of the
                 input data.
+            verbose: Enable verbose output.
         '''
         multiprocessing.Process.__init__(self)
         self._task_queue = task_queue
         self.total_task = self._task_queue.qsize()
         self.current_state = None
+        self.verbose = verbose
 
     def run(self):
         '''Define the job of each process to run.
         '''
-        while True:
-            task_remain = self._task_queue.qsize()
-            task_finished = int((float(self.total_task - task_remain) /
-                                 float(self.total_task)) * 100)
-            if task_finished % 20 == 0 and task_finished != self.current_state:
-                self.current_state = task_finished
-                logger.info('{0}% done'.format(task_finished))
-            if task_remain == 0:
-                break
-        logger.debug('All task data cleared')
+        if self.verbose:
+            pbar = tqdm(total=100)
+            while True:
+                task_remain = self._task_queue.qsize()
+                task_finished = int((float(self.total_task - task_remain) /
+                                     float(self.total_task)) * 100)
+                if task_finished % 20 == 0 and task_finished != self.current_state:
+                    self.current_state = task_finished
+                    logger.info('{0}% done'.format(task_finished))
+                    if task_finished > 0:
+                        pbar.update(20)
+                if task_remain == 0:
+                    break
+            logger.debug('All task data cleared')
+        else:
+            while True:
+                task_remain = self._task_queue.qsize()
+                task_finished = int((float(self.total_task - task_remain) /
+                                     float(self.total_task)) * 100)
+                if task_finished % 20 == 0 and task_finished != self.current_state:
+                    self.current_state = task_finished
+                    logger.info('{0}% done'.format(task_finished))
+                if task_remain == 0:
+                    break
+            logger.debug('All task data cleared')
 
 
-def multi_process(func, data, num_process=None, **args):
+def multi_process(func, data, num_process=None, verbose=False, **args):
     '''Function to use multiprocessing to process pandas Dataframe.
 
     This function applies a function on each row of the input DataFrame by
@@ -128,6 +146,7 @@ def multi_process(func, data, num_process=None, **args):
         data (pandas.DataFrame): A DataFrame to be processed.
         num_process (int, optional): The number of processes to run in
             parallel. Defaults to be the number of CPUs of the computer.
+        verbose (bool, optional): Enable verbose output. Defaults to be False.
         args (dict): Keyword arguments to pass as keywords arguments to `func`
     return:
         A dataframe containing the results
@@ -156,7 +175,7 @@ def multi_process(func, data, num_process=None, **args):
     for w in consumers:
         w.start()
     # Add a task tracking process
-    task_tracker = TaskTracker(tasks)
+    task_tracker = TaskTracker(tasks, verbose)
     task_tracker.start()
     # Wait for all input data to be processed
     tasks.join()
