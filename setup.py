@@ -9,7 +9,7 @@ test_requirements = [
     'pytest'
 ]
 needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
-setup_requires = ['pytest-runner'] if needs_pytest else []
+setup_requires = ['pytest-runner>=2.0,<3.0'] if needs_pytest else []
 
 
 setup(

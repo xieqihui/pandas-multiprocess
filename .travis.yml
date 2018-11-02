@@ -1,0 +1,10 @@
+language: python
+sudo: false
+python:
+  - "3.6"
+cache: pip
+install:
+  - pip install pipenv
+  - pipenv install -d --system
+script:
+  - python setup.py test
