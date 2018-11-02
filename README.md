@@ -1,4 +1,4 @@
-# pandas-multiprocess
+# pandas-multiprocess [![Build Status](https://travis-ci.org/xieqihui/pandas-multiprocess.svg?branch=master)](https://travis-ci.org/xieqihui/pandas-multiprocess)
 A Python package to process Pandas Dataframe using multi-processing.
 
 ## Install
