@@ -1,7 +1,13 @@
 from setuptools import setup
 
-with open('requirements.txt') as f:
-    required = f.read().splitlines()
+requirements = [
+    'numpy',
+    'pandas'
+]
+test_requirements = [
+    'pytest'
+]
+
 
 setup(
     name='pandas_multiprocess',
@@ -15,5 +21,6 @@ setup(
     description='Multiprocessing Support for Pandas DataFrame',
     long_description='Multiprocessing Support for Pandas DataFrame',
     packages=['pandas_multiprocess'],
-    install_requires=required
+    install_requires=requirements,
+    tests_require=test_requirements
 )
