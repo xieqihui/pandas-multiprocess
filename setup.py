@@ -1,3 +1,4 @@
+import sys
 from setuptools import setup
 
 requirements = [
@@ -7,6 +8,8 @@ requirements = [
 test_requirements = [
     'pytest'
 ]
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+setup_requires = ['pytest-runner'] if needs_pytest else []
 
 
 setup(
@@ -22,5 +25,6 @@ setup(
     long_description='Multiprocessing Support for Pandas DataFrame',
     packages=['pandas_multiprocess'],
     install_requires=requirements,
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    setup_requires=setup_requires
 )
