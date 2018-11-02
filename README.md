@@ -45,3 +45,13 @@ result = df.apply(func, axis=1, **args)
 print("Pandas apply() run time {:f} seconds.".format(time.time() - t_0))
 ```
 
+## To Contribute
+#### Set up development environment
+Install `pipenv`
+```
+pip install pipenv
+```
+Install dependency and this package in development mode
+```
+pipenv install '-e .'
+```
