@@ -3,8 +3,7 @@ from setuptools import setup
 
 requirements = [
     'numpy',
-    'pandas',
-    'tqdm'
+    'pandas'
 ]
 test_requirements = [
     'pytest'
