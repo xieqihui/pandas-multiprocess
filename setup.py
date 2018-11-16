@@ -27,5 +27,6 @@ setup(
     packages=['pandas_multiprocess'],
     install_requires=requirements,
     tests_require=test_requirements,
-    setup_requires=setup_requires
+    setup_requires=setup_requires,
+    python_requires='>=2.7'
 )
