@@ -15,7 +15,7 @@ setup_requires = ['pytest-runner>=2.0,<3.0'] if needs_pytest else []
 
 setup(
     name='pandas_multiprocess',
-    version='0.1.1',
+    version='0.1.2',
     author='Qihui Xie',
     author_email='xieqihui@gmail.com',
     maintainer='Qihui Xie',
