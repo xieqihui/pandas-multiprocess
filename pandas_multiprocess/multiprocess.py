@@ -178,7 +178,11 @@ def multi_process(func, data, num_process=None, verbose=True, **args):
         # Collect results
         result_table = []
         while num_task:
-            result_table.append(results.get())
+            result = results.get()
+            if isinstance(result, list):
+                result_table.extend(result)
+            else:
+                result_table.append(result)
             num_task -= 1
         df_results = pd.DataFrame(result_table)
         logger.info("Jobs finished in {0:.2f}s".format(

@@ -9,12 +9,14 @@ pip install pandas-multiprocess
 ## Example
 ### Import the package
 ```python
-from pandas_multiprocess import multi_process
 import time
+import pandas as pd
+import numpy as np
+from pandas_multiprocess import multi_process
 ```
 #### Define a function which will process each row in a Pandas DataFrame
 The func must take a pandas.Series as its first positional argument and returns
-a pandas.Series.
+either a pandas.Series or a list of pands.Series.
 ```python
 def func(data_row, wait):
     time.sleep(wait)
