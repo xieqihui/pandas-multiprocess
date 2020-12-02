@@ -35,12 +35,20 @@ def func(data_row, wait):
     return data_row
 
 
+def func_list(data_row, wait):
+    ''' A sample function returning a list of pd.Series
+    It takes 'wait' seconds to calculate the sum of each row
+    '''
+    time.sleep(wait)
+    data_row['sum'] = data_row['col_1'] + data_row['col_2']
+    return [data_row, data_row]
+
+
 def test_multiprocess():
-    df_len = 1000
+    df_len = 32
     df = pd.DataFrame({'col_1': np.random.normal(size=df_len),
                        'col_2': np.random.normal(size=df_len)
                        })
-    return df
     args = {'wait': 0.001}
     # Using pandas_multiprocess.multi_process() with 8 processes
     result = multi_process(func=func,
@@ -48,3 +56,17 @@ def test_multiprocess():
                            **args)
     assert result.columns.tolist() == ['col_1', 'col_2', 'sum']
     assert len(result) == len(df)
+
+
+def test_multiprocess_list():
+    df_len = 32
+    df = pd.DataFrame({'col_1': np.random.normal(size=df_len),
+                       'col_2': np.random.normal(size=df_len)
+                       })
+    args = {'wait': 0.001}
+    # Using pandas_multiprocess.multi_process() with 8 processes
+    result = multi_process(func=func_list,
+                           data=df,
+                           **args)
+    assert result.columns.tolist() == ['col_1', 'col_2', 'sum']
+    assert len(result) == 2 * len(df)
